@@ -1,7 +1,8 @@
-Java Notes
+Chapter I
 ============
 
-## Contents of the Notes
+### Contents
+
 1) [Java Execution Flow Diagram](#Java-Execution-Flow-Diagram)
 
 2) [JVM](#jvm)
@@ -9,7 +10,34 @@ Java Notes
 3) [Classes vs Files](#Classes-vs-Files)
 
 4) [Main method](#Main-method)
-* [Command line arguments](#Command-line-arguments)
+<!--* [Command line arguments](#Command-line-arguments)-->
+
+5) [Package Declarations and Imports](#Package-Declarations-and-Imports)
+
+6) [Constructors](#Constructors)
+
+7) [Instance initializers](#Instance-initializers)
+
+8) [Primitive Datatypes](#Primitive-Datatypes)
+
+9) [Type promotion in Expressions](#Type-promotion-in-Expressions)
+
+10) [Declaring multiple variables](#Declaring-multiple-variables)
+
+11) [Identifiers](#Identifiers)
+
+12) [Local variables](#Local-variables)
+
+13) [Instance and Class variables](#Instance-and-Class-variables)
+
+14) [ordering elements in a class](#ordering-elements-in-a-class)
+
+15) [Destroying objects and GC](#Destroying-objects)
+
+<!--Chapter II
+============-->
+
+
 
 
 
@@ -229,6 +257,230 @@ Derived 2nd instance init
 Derived class No argument constructor
 ============DONE========
 ```
+## Primitive Datatypes
+UNI code in java - it takes 2 bytes for a character(to represent different scripts)
+
+datatype|space(bytes)|
+---------|-----|
+boolean|1bit|
+byte| 8-bit|
+short|16-bit|
+int|32-bit|
+float|32-bit|
+long|64-bit|
+double|64-bit|
+char|16-bit unicode|
+
+* **octal** (digits 0–7), which uses the number **0** as a prefix—for example, 017 
+* **hexadecimal** (digits 0–9 and letters A–F), which uses the number 0 followed by **x or X** as a prefix—for example, 0xFF 
+* **binary** (digits 0–1), which uses the number **0 followed by b or B** as a prefix—for example, 0b10
+
+double and float store exponents
+
+#### Numeric literals
+You can have underscores in numbers to make them easier to read:
+```
+int million1 = 1000000; 
+int million2 = 1_000_000;
+```
+We’d rather be reading the latter one because the zeroes don’t run together. You can add underscores anywhere except at the beginning of a literal, the end of a literal, right before a decimal point, or right after a decimal point. Let’s look at a few examples:
+```
+double notAtStart = _1000.00;        // DOES NOT COMPILE double notAtEnd = 1000.00_;          // DOES NOT COMPILE double notByDecimal = 1000_.00;      // DOES NOT COMPILE double annoyingButLegal = 1_00_0.0_0;  // this one compiles
+```
+## Type promotion in Expressions
+
+While evaluating expressions, the intermediate value may exceed the range of operands and hence the expression value will be promoted. Some conditions for type promotion are:
+
+* Java automatically promotes each byte, short, or char operand to int when evaluating an expression.
+* If one operand is a long, float or double the whole expression is promoted to long, float or double respectively.
+* all compoud operators perform implicit type casting
+
+```
+class Test2
+{
+    public static void main(String [] args)
+    {
+        byte b=25;
+        b+=10;//implicit conversion.(b=(byte)(b+10))
+        System.out.println("Byte value: "+b);
+    }
+}
+```
+
+* byte short int long - rapping around.(byte can hold -128 to 127)
+
+```
+class Test2
+{
+    public static void main(String [] args)
+    {
+        byte b=(byte)129;
+        System.out.println("Byte value: "+b);
+    }
+}
+ 
+```
+* int to byte and double to byte
+ 
+ 
+```
+//Java program to illustrate Conversion of int and double to byte 
+class Test 
+{ 
+	public static void main(String args[]) 
+	{ 
+		byte b; 
+		int i = 257; 
+		double d = 323.142; 
+		System.out.println("Conversion of int to byte."); 
+		
+		//i%256 
+		b = (byte) i; 
+		System.out.println("i = " + i + " b = " + b); 
+		System.out.println("\nConversion of double to byte."); 
+		
+		//d%256 
+		b = (byte) d; 
+		System.out.println("d = " + d + " b= " + b); 
+	} 
+} 
+
+```
+* narrowing error
+
+```
+class Test2
+{
+    public static void main(String [] args)
+    {
+        byte b=25;
+        b=b+10;//narroeing error
+        /* whenever an operation is performed on a byte,short,char it is automatically converted/upgraded to int
+        right hand side int left hand side byte*/
+        System.out.println("Byte value: "+b);
+    }
+}
+```
+## Declaring multiple variables
+
+```
+boolean b1, b2;//legal
+String s1 = "1", s2;//legal
+double d1, double d2;//not legal
+int i1; int i2;//legal
+int i3; i4;//legal
+```
+## Identifiers
+
+There are only three rules to remember for legal identifi ers: 
+* The name must begin with a letter or the symbol $ or _.  *  Subsequent characters may also be numbers.  
+* You cannot use the same name as a Java reserved word. As you might imagine, a reserved word is a keyword that Java has reserved so that you are not allowed to use it. Remember that Java is case sensitive, so you can use versions of the keywords that only differ in case. Please don’t, though.
+
+
+## Local variables
+**Local variables must be initialised before use**
+
+The compiler is smart enough to recognize variables that have been initialized after their declaration but before they are used.
+```
+public int valid() { 
+int y = 10;
+int x; // x is declared here  
+x = 3; // and initialized here  
+int reply = x + y;  
+return reply; }
+
+```
+The compiler is also smart enough to recognize initializations that are more complex. 
+```
+public void findAnswer(boolean check) {  
+int answer;  
+int onlyOneBranch;  
+if (check) {    
+    OnlyOneBranch = 1;    
+    answer = 1;  
+} 
+else 
+{    
+    answer = 2;  
+}  
+System. out .println(answer);
+System. out .println(onlyOneBranch); // DOES NOT COMPILE }
+```
+
+## Instance and Class variables
+instance variables or class variables are also called fields
+Instance and class variables do not require you to initialize them. As soon as you declare these variables, they are given a default value
+
+## ordering elements in a class
+
+Element| Example |Required? |Where does it go?|
+-------|---------|----------|-------|
+
+Package declaration| package abc;| No |First line in the file|
+
+Import statements| import java.util.*;| No| Immediately after the package|
+Class declaration| public class C |Yes |Immediately after the import|
+
+Field declarations| int value;| No |Anywhere inside a class|
+Method declarations| void method()| No |Anywhere inside a class|
+
+## Destroying objects
+ 
+All Java objects are stored in your program memory’s heap. The heap(free store) represents a large pool of unused memory allocated to your Java application. The heap may be quite large, depending on your environment, but there is always a limit to its size. If your program keeps instantiating objects and leaving them on the heap, eventually it will run out of memory. 
+Java provides a garbage collector to automatically look for objects that aren’t needed anymore and free up space.
+
+#### Garbage collection
+Garbage collection refers to the process of automatically freeing memory on the heap by deleting objects that are no longer reachable in your program
+` System.gc() ` is a method which gives request to the GC to run.(no guarantee it will run)
+```
+ public class Scope { 
+ public static void main(String[] args) { 
+ String one, two; 
+ one = new String("a"); 
+ two = new String("b"); 
+ one = two; //here "a" becomes orphan and eligible for GC
+ String three = one; 
+ one = null;  
+ } }// here "b" goes out of scope and eligible for GC
+
+```
+#### Finilize()
+Java allows objects to implement a method called finalize() that might get called. This method gets called if the garbage collector tries to collect the object. If the garbage collector doesn’t run, the method doesn’t get called
+ If the garbage collector fails to collect the object and tries to run it again later, the method doesn’t get called a second time. 
+
+
+## JAVA operators
+
+## JAVA core APIs
+String name = "Fluffy";//string/literal pool
+String name = new String("Fluffy");//crewated on heap
+replacd vs replace all
+string builder
+
+
+## Arrays
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
