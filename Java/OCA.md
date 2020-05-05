@@ -3,7 +3,7 @@ Chapter I
 
 ### Contents
 
-1) [Java Execution Flow Diagram](#Java-Execution-Flow-Diagram)
+1) [Java Execution Flow Diagram](#Execution-process-of-a-java program)
 
 2) [JVM](#jvm)
 
@@ -37,6 +37,7 @@ Chapter I
 <!--Chapter II
 ============-->
 
+1) [JAVA operators](#JAVA-operators)
 
 
 
@@ -307,45 +308,6 @@ class Test2
 }
 ```
 
-* byte short int long - rapping around.(byte can hold -128 to 127)
-
-```
-class Test2
-{
-    public static void main(String [] args)
-    {
-        byte b=(byte)129;
-        System.out.println("Byte value: "+b);
-    }
-}
- 
-```
-* int to byte and double to byte
- 
- 
-```
-//Java program to illustrate Conversion of int and double to byte 
-class Test 
-{ 
-	public static void main(String args[]) 
-	{ 
-		byte b; 
-		int i = 257; 
-		double d = 323.142; 
-		System.out.println("Conversion of int to byte."); 
-		
-		//i%256 
-		b = (byte) i; 
-		System.out.println("i = " + i + " b = " + b); 
-		System.out.println("\nConversion of double to byte."); 
-		
-		//d%256 
-		b = (byte) d; 
-		System.out.println("d = " + d + " b= " + b); 
-	} 
-} 
-
-```
 * narrowing error
 
 ```
@@ -448,8 +410,272 @@ Garbage collection refers to the process of automatically freeing memory on the 
 Java allows objects to implement a method called finalize() that might get called. This method gets called if the garbage collector tries to collect the object. If the garbage collector doesn’t run, the method doesn’t get called
  If the garbage collector fails to collect the object and tries to run it again later, the method doesn’t get called a second time. 
 
+Chapter II : Operators and Statements
+============
+## Java Operators
+Types of operators:
+1) unary
+2) binary
+3) ternary
+#### Operator presedence
+**NOTE**
+The modulus operation is not limited to positive integer values in Java and may also be applied to negative integers and floating-point integers. For a given divisor y and negative dividend, the resulting modulus value is between and (-y + 1) and 0
+## Numeric promotion
+**Rules**
+1. If two values have different data types, Java will automatically promote one of the values to the larger of the two data types. 
+2. If one of the values is integral and the other is floating-point, Java will automatically promote the integral value to the floating-point value’s data type.
+3. Smaller data types, namely byte, short, and char, are first promoted to int any time they’re used with a Java binary arithmetic operator, even if neither of the operands is int. 
+4. After all promotion has occurred and the operands have the same data type, the resulting value will have the same data type as its promoted operands.
+**Note**
+Using unary operators/compound assignment operators (++,+=) follows impicit conversion so they arent converted to int.
+## Unary operators
++, -, ++, --, !
+! can be used only to boolean expression
+- can be used only to numeric expression
+**Note**
+in Java 1 and true are not related in any way, just as 0 and false are not related.
+## Increment and Decrement operators
+* can be applied to only variables (not constants)
+`10++//compiletime error`
+* nesting of both ++ and -- operators not allowed
+`int b=++(++a);//error`
 
+Example:
+```
+int x = 3; 
+int y = ++x * 5 / x-- + --x; 
+```
+Step I :`int y = 4 * 5 / x-- + --x;  // x assigned value of 4`
+Step II : `int y = 4 * 5 / 4 + --x;  // x assigned value of 3`
+Step III : `int y = 4 * 5 / 4 + 2;  // x assigned value of 2`
+Answer:
+`x=2 and y=7`
+## Assignment Operators
+
+```
+int x = 1.0;  // DOES NOT COMPILE double assigned to int
+short y = 1921222;  // DOES NOT COMPILE out of range for short
+int z = 9f;  // DOES NOT COMPILE treats as float
+long t = 192301398193810323;  // DOES NOT COMPILE interprests as int (use 'L')
+```
+**Note**
+```
+long x = 5; 
+long y = (x=3); 
+System.out.println(x); // Outputs 3 
+System.out.println(y); // Also, outputs 3
+```
+The key here is that (x=3) does two things. First, it sets the value of the variable x to be 3. Second, it returns a value of the assignment, which is also 3. The exam creators are fond of inserting the assignment operator = in the middle of an expression and using the value of the assignment as part of a more complex expression.
+
+#### Casting Primitive values
+Used for narrowing (big datatype to small)
+Overﬂ ow is when a number is so large that it will no longer ﬁ t within the data type, so the system “wraps around” to the next lowest value and counts up from there. There’s also an analogous underﬂ ow, when the number is too low to ﬁ t in the data type.
+
+`System.out.print(2147483647+1);  // -2147483648`
+
+**Wrapping around**
+
+* byte short int long - wrapping around.(byte can hold -128 to 127)
+
+```
+class Test2
+{
+    public static void main(String [] args)
+    {
+        byte b=(byte)129;
+        System.out.println("Byte value: "+b);
+    }
+}
+ 
+```
+* int to byte and double to byte 
+
+ 
+```
+//Java program to illustrate Conversion of int and double to byte 
+class Test 
+{ 
+	public static void main(String args[]) 
+	{ 
+		byte b; 
+		int i = 257; 
+		double d = 323.142; 
+		System.out.println("Conversion of int to byte."); 
+		
+		//i%256 
+		b = (byte) i; 
+		System.out.println("i = " + i + " b = " + b); 
+		System.out.println("\nConversion of double to byte."); 
+		
+		//d%256 
+		b = (byte) d; 
+		System.out.println("d = " + d + " b= " + b); 
+	} 
+} 
+
+```
+
+## Relational Operators
+
+**Note**
+
+```
+int x=0;
+int y=0;
+System.out.println(x>y);//Outputs false
+```
+Not strictly greater than
+#### Instanceof Operator
+a instanceof(b) | True if the reference that `a` points to is an instance of a class, subclass, or class that implements a particular interface, as named in `b`.
+POints to remeber:
+```
+class Parent{}
+class Child extends Parent{}
+```
+
+1) Parent object not instance of Child
+
+`Parent pobj = new Parent();`
+`System.out.println(pobj instanceof Child); //False`
+`System.out.println(pobj instanceof Parent); //True`
+2) Parent referencing Child is an instance of Child
+
+`Parent cobj = new Child();`
+`System.out.println(cobj instanceof Child); //True`
+`System.out.println(cobj instanceof Parent); //True`
+
+## Logical operators
+
+'&' , '|' , '^' - applied to both numeric(bitwose) and boolean(logical) datatypes.
+'&&' , '||' - **short circuit operators** only boolean type
+evaluated left-right
+**Demonstration of Short circuit**
+```
+int x = 6; boolean y = (x >= 6) || (++x <= 7); System.out.println(x);
+
+```
+Because x >= 6 is true, the increment operator on the right-hand side of the expression is never evaluated, so the output is 6.
+## Equality Operators
+1. Comparing two numeric primitive types. If the numeric values are of different data types, the values are automatically promoted as previously described. For example, 5 == 5.00 returns true since the left side is promoted to a double. 
+2. Comparing two boolean values. 
+3. Comparing two objects, including null and String values.
+**Note**
+We cant mix up the three cases they will return compile errors
+```
+boolean x = true == 3;  // DOES NOT COMPILE 
+boolean y = false != "Giraffe";  // DOES NOT COMPILE 
+boolean z = 3 == "Kangaroo";  // DOES NOT COMPILE
+```
+```
+File x = new File("myFile.txt"); 
+File y = new File("myFile.txt");
+File z = x; System.out.println(x == y);  // Outputs false 
+System.out.println(x == z);  // Outputs true
+
+```
+## Java Statements
+#### If-then statements
+
+```
+int x = 1; 
+if(x) {  // DOES NOT COMPILE  ... }
+```
+#### Ternary Operator
+There is no requirement that second and third expressions in ternary operations have the same data types, although it may come into play when combined with the assignment operator. Compare the following two statements:
+```
+System.out.println((y > 5) ? 21 : "Zebra"); 
+int animal = (y < 91) ? 9 : "Horse";  // DOES NOT COMPILE
+```
+#### Switch statement
+Supported datatypes:
+* int and Integer 
+* byte and Byte 
+* short and Short 
+* char and Character 
+* String 
+* enum values
+
+**Note**
+
+* Duplicate case values are not allowed.
+* The value for a case must be of the same data type as the variable in the switch.
+* The value for a case must be a constant or a literal. Variables are not allowed.
+* The break statement is used inside the switch to terminate a statement sequence.
+* The break statement is optional. If omitted, execution will continue on into the next case.
+* The default statement is optional and can appear anywhere inside the switch block. In case, if it is not at the end, then a break statement must be kept after the default statement to omit the execution of the next case statement.
+Exmaple:
+```
+private int getSortOrder(String firstName, final String lastName) {
+String middleName = "Patricia";  
+final String suffix = "JR";  
+int id = 0; 
+switch(firstName) {    
+    case "Test":      
+        return 52;
+    case middleName:  // DOES NOT COMPILE  (middle name not final variable ie.,constant)    
+        id = 5;      
+        break;    
+    case suffix:      
+        id = 0;      
+        break;    
+    case lastName:  // DOES NOT COMPILE  (lastname is not constant as it is passed to the function)    
+        id = 8;      
+        break;    
+    case 5:  // DOES NOT COMPILE (not matching datatype)      
+        id = 7;      
+        break;    
+    case 'J':  // DOES NOT COMPILE      (not matching datatype)      
+        id = 10;      
+        break;    
+    case java.time.DayOfWeek.SUNDAY:  // DOES NOT COMPILE    (not matching datatype)        
+        id=15;      
+        break;  
+        }  
+    return id; 
+}
+```
+#### For loop
+1)
+``` 
+for( ; ; ){}//infite loop
+```
+``` 
+for(  ) or for( ; ) //compile error
+{}
+```
+2) Multiple terms
+```
+int x = 0; 
+for(long y = 0, z = 4; x < 5 && y < 10; x++, y++) {  
+System.out.print(y + " "); 
+} 
+System.out.print(x);
+```
+3) Redeclaring a Variable in the Initialization Block 
+```
+int x = 0; 
+for(long y = 0, x = 4; x < 5 && y < 10; x++, y++) {   // DOES NOT COMPILE  System.out.print(x + " "); }
+```
+4) Using Incompatible Data Types in the Initialization Block 
+```
+for(long y = 0, int x = 4; x < 5 && y<10; x++, y++) {   // DOES NOT COMPILE  System.out.print(x + " "); } 
+```
+5) Using Loop Variables Outside the Loop 
+```
+for(long y = 0, x = 4; x < 5 && y < 10; x++, y++) {  System.out.print(y + " "); } System.out.print(x);  // DOES NOT COMPILE
+```
+#### for-each Statement
+#### Nested loops
+**Break statement**
+Usage of break statement in a nested loop terminates the whole loop.
+[]img
+**Labled Break statement**
+**Labled Continue statement**
+
+<!--
+### Contents
 ## JAVA operators
+#### operator precedence
 
 ## JAVA core APIs
 String name = "Fluffy";//string/literal pool
@@ -457,7 +683,7 @@ String name = new String("Fluffy");//crewated on heap
 replacd vs replace all
 string builder
 
-
+##
 ## Arrays
 
 
@@ -466,12 +692,23 @@ string builder
 
 
 
+-->
 
 
 
 
 
-
+<!--during overloading
+widening
+autoboxing
+varargs
+varagrs invoked with 0 arguments also
+varargs should be last argument and the only one varg args is allowed
+converting arraylost to array should stored in object arrya
+ex: Object[] arr = list.toArray(); //only to object array
+generics need to maintain backward compatibiluty
+covertinf array to list
+List<> list=Arrays.asList(array);-------->
 
 
 
