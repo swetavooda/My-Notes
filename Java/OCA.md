@@ -1,43 +1,45 @@
-Chapter I
-============
+INDEX
+=============
+[Chapter I: Java Building Blocks](#Chapter-i--Java-Building-Blocks)
+
+[Chapter II : Operators and Statements](#Chapter-ii--Operators-and-Statements)
+
+
+# Chapter I: Java Building Blocks
+
 
 ### Contents
 
-1) [Java Execution Flow Diagram](#Execution-process-of-a-java program)
+1. [Execution process of a java program](#Execution-process-of-a-java-program)
 
-2) [JVM](#jvm)
+2. [JVM](#jvm)
 
-3) [Classes vs Files](#Classes-vs-Files)
+3. [Classes vs Files](#Classes-vs-Files)
 
-4) [Main method](#Main-method)
+4. [Main method](#Main-method)
 <!--* [Command line arguments](#Command-line-arguments)-->
 
-5) [Package Declarations and Imports](#Package-Declarations-and-Imports)
+5. [Package Declarations and Imports](#Package-Declarations-and-Imports)
 
-6) [Constructors](#Constructors)
+6. [Constructors](#Constructors)
 
-7) [Instance initializers](#Instance-initializers)
+7. [Instance initializers](#Instance-initializers)
 
-8) [Primitive Datatypes](#Primitive-Datatypes)
+8. [Primitive Datatypes](#Primitive-Datatypes)
 
-9) [Type promotion in Expressions](#Type-promotion-in-Expressions)
+9. [Type promotion in Expressions](#Type-promotion-in-Expressions)
 
-10) [Declaring multiple variables](#Declaring-multiple-variables)
+10. [Declaring multiple variables](#Declaring-multiple-variables)
 
-11) [Identifiers](#Identifiers)
+11. [Identifiers](#Identifiers)
 
-12) [Local variables](#Local-variables)
+12. [Local variables](#Local-variables)
 
-13) [Instance and Class variables](#Instance-and-Class-variables)
+13. [Instance and Class variables](#Instance-and-Class-variables)
 
-14) [ordering elements in a class](#ordering-elements-in-a-class)
+14. [ordering elements in a class](#ordering-elements-in-a-class)
 
-15) [Destroying objects and GC](#Destroying-objects)
-
-<!--Chapter II
-============-->
-
-1) [JAVA operators](#JAVA-operators)
+15. [Destroying objects and GC](#Destroying-objects)
 
 
 
@@ -410,16 +412,31 @@ Garbage collection refers to the process of automatically freeing memory on the 
 Java allows objects to implement a method called finalize() that might get called. This method gets called if the garbage collector tries to collect the object. If the garbage collector doesn’t run, the method doesn’t get called
  If the garbage collector fails to collect the object and tries to run it again later, the method doesn’t get called a second time. 
 
-Chapter II : Operators and Statements
-============
+# Chapter II : Operators and Statements
+
+### Contents
+1. [Java Operators](#Java-Operators)
+2. [Numeric promotion](#Numeric-promotion)
+3. [Unary operators](#Unary-operators)
+4. [Increment and Decrement operators](#Increment-and-Decrement-operators)
+5. [Assignment Operators and casting](#Assignment-Operators)
+6. [Relational Operators and instanceof operator](#Relational-Operators)
+7. [Logical operators](#Logical-operators)
+8. [Equality Operators](#Equality-Operators)
+9. [Java Statements](#Java-Statements)
+    * [If-then statements](#If-then-statements)
+    * [Ternary Operator](#Ternary-Operator)
+    * [Switch statement](#Switch-statement)
+    * [For loop](#For-loop)
+    * [Nested loops and Control stuctures](#Nested-loops-and-Control-stuctures)
 ## Java Operators
 Types of operators:
-1) unary
-2) binary
-3) ternary
+1. unary
+2. binary
+3. ternary
 #### Operator presedence
 **NOTE**
-The modulus operation is not limited to positive integer values in Java and may also be applied to negative integers and floating-point integers. For a given divisor y and negative dividend, the resulting modulus value is between and (-y + 1) and 0
+The modulus operation is not limited to positive integer values in Java and may also be applied to negative integers and floating-point integers. For a given divisor y and negative dividend, the resulting modulus value is between and (-y + 1. and 0
 ## Numeric promotion
 **Rules**
 1. If two values have different data types, Java will automatically promote one of the values to the larger of the two data types. 
@@ -665,24 +682,42 @@ for(long y = 0, int x = 4; x < 5 && y<10; x++, y++) {   // DOES NOT COMPILE  Sys
 for(long y = 0, x = 4; x < 5 && y < 10; x++, y++) {  System.out.print(y + " "); } System.out.print(x);  // DOES NOT COMPILE
 ```
 #### for-each Statement
-#### Nested loops
+#### Nested loops and Control stuctures
+
 **Break statement**
-Usage of break statement in a nested loop terminates the whole loop.
-[]img
+
+Usage of break statement in a nested loop terminates the inner loop in which break statement is written.
+![Break statements](java-imgs/java-break-statement-works.jpg)
+
 **Labled Break statement**
+
+![Labled break statements](java-imgs/break-with-and-without-label.png)
+
 **Labled Continue statement**
+
+```
+public class SwitchSample {  
+public static void main(String[] args) {    
+FIRST_CHAR_LOOP: for (int a = 1; a <= 4; a++) {      
+    for (char x = 'a'; x <= 'c'; x++) {        
+        if (a == 2 || x == 'b')          
+            continue FIRST_CHAR_LOOP;        
+        System.out.print(" " + a + x);      
+    }    
+    }  
+} 
+}
+```
 
 <!--
 ### Contents
 ## JAVA operators
 #### operator precedence
-
 ## JAVA core APIs
 String name = "Fluffy";//string/literal pool
 String name = new String("Fluffy");//crewated on heap
 replacd vs replace all
 string builder
-
 ##
 ## Arrays
 
