@@ -708,6 +708,127 @@ FIRST_CHAR_LOOP: for (int a = 1; a <= 4; a++) {
 } 
 }
 ```
+# Chapter II : Java API
+
+### Contents
+1. [Java Operators](#Java-Operators)
+# Strings
+* strings dont have to be intantiated with new.
+## String concatenation
+**Rules**
+1. if **either** operands is string '+' means concatenation
+2. if both operands is numeric '+' means addition
+3. expresion is evaluated left to right
+example:
+```
+int three = 3; 
+String four = "4"; 
+System.out.println(1 + 2 + three + four);
+```
+result is '64'
+```
+String s="1";
+s+="2";
+s+=3;
+System.out.println(s);//123
+```
+## Immutability
+* Once a string object is created its not allowed to be changed.
+* You can only change the reference of the string.(to avoid doing so me can reclare the string reference as final)
+
+## String Pool
+* String pool is located inside JVM. Used for efficient memory management.
+* String pool contains the literal values that appear in our program.
+```
+String name = "Fluffy";//uses string pool
+String name = new String("Fluffy");//not so efficient//created on heap
+```
+## String methods
+#### length()
+#### charAt()
+* throws stringIndexOutOfBoundsException
+#### indexOf()
+`int indexOf(char ch)` 
+`int indexOf(char ch, index fromIndex)` 
+`int indexOf(String str)` 
+`int indexOf(String str, index fromIndex)`
+return -1 if not found.
+#### substring()
+`int substring(int beginIndex)//default till end of string` 
+`int substring(int beginIndex, int endIndex)//end index not included`
+
+Example
+```
+String string = "animals"; 
+System.out.println(string.substring(3));  // mals System.out.println(string.substring(string.indexOf('m'))); // mals System.out.println(string.substring(3, 4)); // m
+```
+```
+System.out.println(string.substring(3, 2));  // throws exception(runtime)
+System.out.println(string.substring(3, 8)); // throws exception(runtime)
+```
+#### toLowerCase() and toUpperCase()
+`String toUpperCase()`
+`String toLowerCase()`
+* immutable so original string remains same.
+* numericals and special chars are not changed.
+
+Example:
+```
+String string = "animals"; 
+System.out.println(string.toUpperCase());  // ANIMALS
+System.out.println("Abc123".toLowerCase());  // abc123
+```
+#### equals() and equalsIgnoreCase()
+`boolean equals()`
+`boolean equalsIgnoreCase()`
+Example:
+```
+System.out.println("abc".equals("ABC"));  // false System.out.println("ABC".equals("ABC"));  // true System.out.println("abc".equalsIgnoreCase("ABC"));  // true
+```
+#### startsWith() and endsWith()
+`boolean startsWith()`
+`boolean endsWith()`
+Example:
+```
+System.out.println("abc".startsWith("a")); // true System.out.println("abc".startsWith("A")); // false System.out.println("abc".endsWith("c")); // true System.out.println("abc".endsWith("a")); // false
+```
+#### contains
+`boolean contains()`
+Example
+```
+System.out.println("abc".contains("b")); // true System.out.println("abc".contains("B")); // false
+```
+#### replace()
+`String replace(char oldChar, char newChar)` 
+`String replace(CharSequence oldChar, CharSequence newChar)`
+Example:
+```
+System.out.println("abcabc".replace('a', 'A')); // AbcAbc System.out.println("abcabc".replace("a", "A")); // AbcAbc
+```
+#### trim()
+`public String trim()`
+Example:
+```
+System.out.println("abc".trim());           // abc 
+System.out.println("\t   a b c\n".trim()); // a b c
+```
+## Method chaining
+```
+String result = "AniMaL   ".trim().toLowerCase().replace('a', 'A'); System.out.println(result);
+```
+## StringBuilder
+The StringBuilder class creates a String without storing all those interim String values. Unlike the String class, StringBuilder is **not immutable**.
+
+#### Creating StringBuilder
+```
+StringBuilder sb1 = new StringBuilder();
+StringBuilder sb2 = new StringBuilder("animal"); 
+StringBuilder sb3 = new StringBuilder(10);//give capacity which can be modified automaticlly
+```
+####
+
+pg164
+
 
 <!--
 ### Contents
@@ -748,7 +869,8 @@ List<> list=Arrays.asList(array);-------->
 
 
 
-
+marker interface - Serializable
+functional interface - only one abstract method
 
 
 
