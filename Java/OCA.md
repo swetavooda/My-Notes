@@ -740,6 +740,13 @@ System.out.println(s);//123
 * String pool is located inside JVM. Used for efficient memory management.
 * String pool contains the literal values that appear in our program.
 ```
+System.out.println("Hello World!");
+String f = "Hello";
+f+"KMIT";//created on string constant pool
+```
+**Does garbage colecter reclaim memory from string constant pools?**
+
+```
 String name = "Fluffy";//uses string pool
 String name = new String("Fluffy");//not so efficient//created on heap
 ```
@@ -817,7 +824,31 @@ System.out.println("\t   a b c\n".trim()); // a b c
 String result = "AniMaL   ".trim().toLowerCase().replace('a', 'A'); System.out.println(result);
 ```
 ## StringBuilder
+
 The StringBuilder class creates a String without storing all those interim String values. Unlike the String class, StringBuilder is **not immutable**.
+```
+		StringBuilder s = new StringBuilder();
+		StringBuilder p = new StringBuilder("kmit");
+		s=p;
+		s.append("ngit");
+		s=s.append("hi");
+		System.out.println(s+" "+p);//s="kmitngithi" p="kmitngithi"
+```
+**Note**
+Stringbuilder is mutable when we say `s=p` s and p point to same string ref.
+So if we modify value at s since p also stores same value it is reflected.
+```
+		StringBuilder sb1 = new StringBuilder("kmit");
+		StringBuilder sb2 = new StringBuilder(sb1);
+		StringBuilder sb3=sb1;
+        System.out.println(sb1+" "+sb2+" "+sb3);// kmit kmit kmit
+		sb3 = new StringBuilder("ngit");
+		System.out.println(sb1+" "+sb2+" "+sb3);// kmit kmit ngit
+
+```
+**Note**
+Here sb3 is made to point to another location by the usage of new StringBuilder, which doesnt effect sb1;
+Only while performing operations such as append these changes are refected to sb1.
 
 #### Creating StringBuilder
 ```
@@ -825,10 +856,94 @@ StringBuilder sb1 = new StringBuilder();
 StringBuilder sb2 = new StringBuilder("animal"); 
 StringBuilder sb3 = new StringBuilder(10);//give capacity which can be modified automaticlly
 ```
-####
+We can replace StringBuilder with StringBuffer to get same results as above.
+#### chatAt(), indexOf(), length(), substring()
+work same as in String class.
+#### append()
+```
+StringBuilder sb = new StringBuilder().append(1).append('c'); 
+sb.append("-").append(true); 
+System.out.println(sb);      // 1c-true
+```
+#### insert()
+The insert() method adds characters to the StringBuilder at the requested index and returns a reference to the current StringBuilder.
+```
+StringBuilder sb = new StringBuilder("animals");     		
+    sb.insert(7, "-");                   	
+	sb.insert(0, "-");                   
+	sb.insert(4, "-");                   	
+    System.out.println(sb);//-ani-mals-
 
+```
+#### delete() and deleteCharAt()
+```
+StringBuilder delete(int start, int end) //excluding end
+StringBuilder deleteCharAt(int index)
+```
+Example:
+```
+StringBuilder sb = new StringBuilder("abcdef"); 
+sb.delete(1, 3);                  // sb = adef 
+sb.deleteCharAt(5);                   // throws an exception
+```
+#### reverse()
+```
+StringBuilder sb = new StringBuilder("ABC"); 
+sb.reverse(); 
+System.out.println(sb);
+```
+#### toString()
+converst StringBuilder to String
+`String s = sb.toString();`
 pg164
 
+## StringBuffer
+StringBuffer is threadsafe while stringbuilder isnt
+It was used before stringbuilder was added in Java5
+
+
+## Equality and Comparing Strings
+'==' -> checks for the references of the objects not the values.
+```
+StringBuilder one = new StringBuilder(); 
+StringBuilder two = new StringBuilder(); 
+StringBuilder three = one.append("a"); 
+System.out.println(one == two); // false 
+System.out.println(one == three); // true
+
+```
+We know that stringbuilders ane mutable.
+```
+    String q="Hello World";
+    String r="Hello World";
+    String s=" Hello World";//line-3
+    s=s.trim();//line-4
+    System.out.println(s);// "Hello World"
+    System.out.println(s==q);//false line-6
+    System.out.println(r==q);//true
+```
+at line 6 we assume that the answer should be `true` but it is not.
+at line-4 the trim() function return a new string ref (new string) at runtime.
+But, **strings are poled at compile time** therefore it return false.
+has it been `String s="Hello World";` at line-3 then the answer at line-6 is true, because the source code of trim return `this` the same ref.
+## equals()
+The String equals() method overrides the equals() method of Object class.
+```
+String x = "Hello World"; String z = " Hello World".trim(); System.out.println(x.equals(z)); // true
+```
+```
+String a = new String("kmit");
+		String b = new String("kmit");
+		System.out.println(a.equals(b));
+
+```
+**NOTE**
+
+```     StringBuilder a = new StringBuilder("kmit");
+		StringBuilder b = new StringBuilder("kmit");
+		System.out.println(a.equals(b));//false
+```
+StringBuilder doesnt implement `equals()` method therefore in such cases it will check the references.
 
 <!--
 ### Contents
