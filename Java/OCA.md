@@ -943,7 +943,307 @@ String a = new String("kmit");
 		StringBuilder b = new StringBuilder("kmit");
 		System.out.println(a.equals(b));//false
 ```
+
 StringBuilder doesnt implement `equals()` method therefore in such cases it will check the references.
+
+
+
+# Chapter III : Methods and Encapsulation
+## Access Modifiers
+**public** The method can be called from any class
+**protected** same classes or subclasses.
+**default** only called from classes in the same package
+**private** The method can only be called from within the class.
+## Specifiers
+**static**
+**abstarct**
+**final**
+**synchronized**
+**native**
+#### order
+accessmodifier optional specifier rettype 
+## varargs
+ * A vararg parameter must be the last element in a method’s parameter list. 
+ * This implies you are only allowed to have one vararg parameter per method.
+```
+public void walk1(int... nums) { } public void walk2(int start, int... nums) { } public void walk3(int... nums, int start) { } // DOES NOT COMPILE public void walk4(int... start, int... nums) { } // DOES NOT COMPILE
+```
+`walk(1, null);     // throws a NullPointerException`
+because varargs is type int and passing null
+## Static
+static members live till class lives.
+till when does class live?
+what happens when class is loaded in the JVM?
+1. look for main method in java .class file
+2. invoke main method
+3. crreate Thread scheduler and give it to the class
+4. make garbage collector available
+
+when is the class eligible for garbage collection?
+1. main method terminates.
+2. all threads created by main terminate
+3. no objects of loaded class should be created on the heap.
+
+## Static methods
+* static methods dont need an instance of the class.
+* They can only directly call other static methods.
+* They can only directly access static data.
+* They cannot refer to this or super in any way.
+methods of class- shared(class-level and object-level)
+attributes of class - object-level(state)
+static methods - class-level
+constructors- shared(class-level and object-level)
+```
+public class KoalaTester {  public static void main(String[] args) {    Koala.main(new String[0]);          // call static method  } }
+```
+```
+ Koala k = new Koala(); 
+ System.out.println(k.count);          // k is a Koala 
+ k = null;
+ System.out.println(k.count);          // k is still a Koala
+ ```
+  Java doesn’t care that k happens to be null. Since we are looking for a static, it doesn’t matter.
+*  A static member cannot call an instance member. 
+```
+public class Static {  
+private String name = "Static class";  
+public static void first() {  }  
+public static void second() {  }  
+public void third() {  System.out.println(name); }  
+public static void main(String args[]) {    
+    first();    
+    second();    
+    third();          // DOES NOT COMPILE  
+    } 
+}
+```
+```
+ public class Gorilla { 
+ 2:    public static int count; 
+ 3:    public static void addGorilla() { count++; } 
+ 4:    public void babyGorilla() { count++; } 
+ 5:    public void announceBabies() { 
+ 6:      addGorilla(); 
+ 7:      babyGorilla(); 
+ 8:    } 
+ 9:    public static void announceBabiesToEveryone() { 
+ 10:     addGorilla(); 
+ 11:     babyGorilla();     // DOES NOT COMPILE 
+ 12:   } 
+ 13:   public int total; 
+ 14:   public static average = total / count;  // DOES NOT COMPILE 
+ 15: }
+ ```
+ **line 14 doesn’t compile because a static variable is trying to use an instance variable. **
+ * Static/instance varibales are automatically initialized to default values.
+ * it is a good practice to make final attributs of the class static(reduce space )
+## Static Initialization/initializers
+* they are called when the class is loaded in teh JVM.(when class is first used)
+* We can assign final/static fields values in the static initilizer.
+* static block and static variables are executed in order they are present in a program
+
+## Static imports
+ Regular imports are for importing classes. Static imports are for importing static members of classes. 
+```
+import java.util.List; 
+import static java.util.Arrays.asList;          // static import public class 
+StaticImports {  
+    public static void main(String[] args) {    
+        List<String> list = asList("one", "two");     // no Arrays. 
+    } 
+}    
+```
+Example:
+```
+1: import static java.util.Arrays; // DOES NOT COMPILE 
+2: import static java.util.Arrays.asList; 
+3: static import java.util.Arrays.*;  // DOES NOT COMPILE 
+4: public class BadStaticImports { 
+5:   public static void main(String[] args) { 
+6:    Arrays.asList("one");  // DOES NOT COMPILE 
+7:  } }
+```
+* The compiler will complain if you try to explicitly do a static import of two methods with the same name or two static variables with the same name. 
+For example:
+```
+import static statics.A.TYPE; 
+import static statics.B.TYPE;     // DOES NOT COMPILE
+```
+## Passing Data amoung methods
+* Java is a "pass-by-value" language
+* This means that a copy of the variable is made and the method receives that copy. Assignments made in the method do not affect the caller
+```
+public static void main(String[] args) {  
+String name = "Webby";  
+speak(name);  
+System.out.println(name); //webby
+} 
+public static void speak(String name) {  name = "Sparky"; }
+```
+```
+public static void main(String[] args) {  
+StringBuilder name = new StringBuilder();  
+speak(name);  
+System.out.println(name); // Webby } 
+public static void speak(StringBuilder s) {  s.append("Webby"); }
+```
+s is a copy of the variable name . Both point to the same StringBuilder, which means that changes made to the StringBuilder are available to both references.
+
+
+## Overloading Methods
+ Method overloading occurs when there  are different method signatures with the same name but different type parameters. **Cannot change return type**
+ #### Overloading and varargs
+ ```
+ public void fly(int[] lengths) { } 
+ public void fly(int... lengths) { }     // DOES NOT COMPILE
+ ```
+JVM treats varargs as an array. this means they are treated as duplicates.
+But we need to use `fly(new int[] { 1, 2, 3 });` for passing to array while varargs can be used with standalone parameters. `fly(1,2,3);`
+#### Overloading and Autoboxing
+```
+public void fly(int numMiles) { } 
+public void fly(Integer numMiles) { }
+```
+if we call `fly(3);` then primitive type version as java tries to use most specific parameter.
+If primitive type isnt present then it will autobox
+Examples:
+```
+public void fly(int numMiles) { } 
+public void fly(Integer numMiles) { }
+```
+`fly("test");` it calls the String and finds exact match.
+`fly(50);` it looks for **int** parameter, when it doesnt find it autoboxes to **Integer** and still doesnt find match so goes to Object one.
+#### Primitives and overloading
+Java can only accept wider types. An int can be passed to a method taking a long parameter. Java will not automatically convert to a narrower type
+#### Order of match during overloading
+* exact match(primitives)
+* widening
+* autoboxing
+* varagrs
+Exapmle:
+```
+public class TooManyConversions {  
+public static void play(Long l) { }
+public static void play(Long... l) { }  
+public static void main(String[] args) {    
+play(4);     // DOES NOT COMPILE    
+play(4L);     // calls the Long version  } }
+```
+Java will convert int to long or Integer, but not both(widenng and autoboxing)
+* it allows only one conversion
+## Constructors
+Constructors are used when creating a new object. This process is called instantiation because it creates a new instance of the class. A constructor is called when we write new followed by the name of the class
+* we can also initilize final vriables in a constructor
+
+* a constructor is typically used for initialising instance variables.
+#### Default constructor
+* t=Java created constructor(default constructor)->no arguments constructor.
+* If no constructor is created JVM *generates*(at compiletime) a default constructor.
+* If a parameterized constructor is defined then the default constructor is no longer available.
+* we can also have private constructors.(it prevents other classes from creating instances of the class)
+#### Overloading constructors
+ Constructors can be called only by writing `new` before the name of the constructor
+`this()` can be used to call the constructor of the same instance.
+`public Hamster(int weight) {  Hamster(weight, "brown");     // DOES NOT COMPILE }
+`
+Solution:
+```
+public Hamster(int weight) {  this(weight, "brown"); }
+```
+**NOTE**
+this() call must be the fi rst noncommented statement in the constructor.
+#### Constructor chaining
+```
+public Mouse(int weight) {     
+    this(weight, 16); // calls constructor with 2 parameters   
+}   
+public Mouse(int weight, int numTeeth) {    
+    this(weight, numTeeth, 6); // calls constructor with 3 parameters  
+}   
+public Mouse(int weight, int numTeeth, int numWhiskers) {     
+    this.weight = weight;     
+    this.numTeeth = numTeeth;     
+    this.numWhiskers = numWhiskers;   
+} 
+```
+
+## Order of initialization
+1. initialize super class
+2. static variable declaration and static initializer order in file.
+3. instance variable declaration and instance initilizer in the order they appear in the file.
+4. constructor
+
+## Encapsulation
+* Encapsulating data is helpful because it prevents callers from making uncontrolled changes to your class.
+ * Encapsulation means we set up the class so only methods in the class with the variables can refer to the instance variables. Callers are required to use these methods. 
+ 
+ ```
+ public class Swan {  int numberEggs;     // instance variable } 
+     mother.numberEggs = -1;   
+```
+which is bad how can it have -Ve number of eggs.
+therefore we use encapsulation
+```
+ public void setNumberEggs(int numberEggs) {     // setter
+ if (numberEggs >= 0)                     // guard condition
+ this.numberEggs = numberEggs; } }
+ ```
+ * For encapsulation, remember that data (an instance variable) is private and getters/setters are public
+#### JAVA beans
+They are used to encapsulate many objects into a single object (the bean), so that they can be passed around as a single bean object instead of as multiple individual objects. A JavaBean is a Java Object that is serializable, has a nullary constructor, and allows access to properties using getter and setter methods.
+
+A JavaBean is a Java class that should follow the following conventions:
+
+* It should have a no-arg constructor.
+* It should be Serializable.
+* It should provide methods to set and get the values of the properties, known as getter and setter methods.
+## Immutable classes
+we make classes immutable so they cannot be changed at all.
+* dont have setter methods.
+```
+public class NotImmutable {   
+private StringBuilder builder;   
+public NotImmutable(StringBuilder b) {     
+builder = b;   }   
+public StringBuilder getBuilder() {     
+return builder;   
+} 
+}
+
+```
+here builder is returned and anychanges made on it will be reflected on the instance variable.
+Solution:
+* getter return a immutable object.
+(or)
+* create a new instance in constructer and initialize.
+
+```
+public Mutable(StringBuilder b) {  
+    builder = new StringBuilder(b); 
+    } 
+public StringBuilder getBuilder() {  
+    return new StringBuilder(builder); 
+}
+```
+## Lambdas
+* lamba methods are also called closures
+* functioanl programming uses lambda expressions to code.
+* lambda functions are like anonymous methods
+
+syntax
+`a->a.canHop();`
+
+
+261
+
+
+
+
+
+
+
+
+
 
 <!--
 ### Contents
@@ -981,6 +1281,10 @@ generics need to maintain backward compatibiluty
 covertinf array to list
 List<> list=Arrays.asList(array);-------->
 
+inner static classes
+protected privates exapmles
+lambda
+predicates
 
 
 
